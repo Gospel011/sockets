@@ -10,23 +10,70 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <link rel="stylesheet" href="style.css">
     <title>Chat app</title>
   </head>
   <body>
-    <h1>iChat</h1>
+    <h1 class="title">iChat</h1>
     <!-- App Frame -->
     <div class="main">
       <!-- Header -->
-      <div class="name"><i class="fa fa-user" aria-hidden="true"></i></div>
-      <input
-        type="text"
-    name="username"
-    value="anonymous"
-    maxlength="20"
-    ,
-    class="name-input"
-    id="name-input"
-      />
+      <div class="name">
+        <!-- Account icon -->
+        <span><i class="fa fa-user" aria-hidden="true"></i></span>
+
+        <!-- Input field -->
+        <input
+          type="text"
+          name="username"
+          value="anonymous"
+          maxlength="20"
+          class="name-input"
+          id="name-input"
+        />
+      </div>
+
+      <!-- Chat Container -->
+      <ul class="message-container" id="message-container">
+        <!-- Message left -->
+        <li class="message-left">
+          <p class="message">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </p>
+          <span>Emmanuel &#x2022 11th Apr, 2024.</span>
+        </li>
+
+        <!-- Message right -->
+        <li class="message-right">
+          <p class="message">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </p>
+          <span>Emmanuel &#x2022 11th Apr, 2024.</span>
+        </li>
+
+        <!-- Is typing message -->
+        <li class="message-feedback">
+          <p class="feedback" id="feedback">Gospel is typing...</p>
+        </li>
+
+      </ul>
+      
+      <!-- Message input form -->
+      <form class="message-form" id="message-form">
+        <!-- Input field -->
+        <input type="text" name="message" id="message", class="message-input"> 
+        
+        <div class="v-divider"></div>
+        <!-- send button -->
+        <button type="submit" class="send-button">
+          send <span><i class="fa fa-paper-plane" aria-hidden="true"></i></span>
+        </button>
+      </form>
+
     </div>
+
+    <!-- Total people connected -->
+    <h3 class="clients-total" id="clients-total">Total clients: 2</h3>
+    
   </body>
 </html>
