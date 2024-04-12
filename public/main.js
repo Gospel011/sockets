@@ -13,6 +13,7 @@ messageForm.addEventListener('submit', (e) => {
 });
 
 function sendMessage() {
+    if(messageInput.value === '') return;
     console.log(messageInput.value);
     const data = {
         name: nameInput.value,
@@ -21,12 +22,36 @@ function sendMessage() {
     }
 
     socket.emit('message', data);
+    addMessageToUI(true, data);
+    messageInput.value = '';
+}
+
+function addMessageToUI(isOwnMessage, data) {
+    const messageElement = `<li class=${isOwnMessage ? "message-right" : "message-left" }>
+    <p class="message">
+      ${data.message}
+    </p>
+    <span>${data.name} &#x2022 ${moment(data.date).fromNow()}</span>
+  </li>`;
+
+  messageContainer.innerHTML += messageElement;
+
+  scrollToBottom();
+  
+  console.log(messageContainer.innerHTML);
+}
+
+function scrollToBottom() {
+    messageContainer.scrollTo(0, messageContainer.scrollHeight)
 }
 
 socket.on('clients-total', (data) => {
     clientsTotal.innerText = `Total clients: ${data}`;
 })
 
+
+// Event when message is recieved from server
 socket.on('chat-message', (data) => {
     console.log("Recieved", data)
+    addMessageToUI(false, data);
 })
