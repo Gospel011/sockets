@@ -22,7 +22,7 @@
   "homepage": "https://github.com/Gospel011/sockets#readme",
   "dependencies": {
     "express": "^4.19.2",
-    "socket.io": "^4.7.5"
+    "socket.io": "4.4.1"
   },
   "devDependencies": {
     "morgan": "^1.10.0"

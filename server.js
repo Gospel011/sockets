@@ -4,34 +4,80 @@ const server = app.listen(3000, () => {
   console.log("App is listening on port 3000");
 });
 
+const socketRouter = require('./routes/sockets_route');
 
-const connectedClients = [];
 
 const io = require('socket.io')(server);
 
+// app.use('/', (req, res, next) => {
+//   req.io = io;
+//   next();
+// }, socketRouter);
+
+const connectedClients = [];
+
+
 io.on('connection', onConnected);
 
-function onConnected (socket) {
-  console.log(`User: ${socket.id} connected`)
+const chatNsp = io.of('/chat');
 
-  connectedClients.push(socket.id);
-  io.emit('clients-total', connectedClients.length);
+chatNsp.on('connection', onChatConnected)
 
-  console.log("Total connected clients:", connectedClients.length)
+function onChatConnected(socket) {
+  console.log("User", socket.id, "connected to the chat namespace");
   
+  socket.on('disconnect', ()=> {
+    console.log("User", socket.id, "disconnected from the chat namespace");
+    
+  })
+}
+
+
+function onConnected (socket) {
+  connectedClients.push(socket.id);
+  console.log(`User: ${socket.id} connected`, connectedClients);
+  
+
   
   socket.on('disconnect', () => {
-    console.log(`User: ${socket.id} disconnected`);
-    connectedClients.splice(connectedClients.indexOf(socket.id), 1)
-    io.emit('clients-total', connectedClients.length);   
-    console.log("Total connected clients:", connectedClients.length)
+    connectedClients.splice(connectedClients.indexOf(socket.id), 1);
+    console.log(`User: ${socket.id} disconnected`, connectedClients);   
+    
   })
 
-  socket.on('message', (data) => {
-    console.log(`Message recieved from ${data.name}: ${data.message}`)
+  
+  socket.on('new chat', (chat) => {
+    
 
-    socket.broadcast.emit('chat-message', data);
+    console.log("new chat recieved", chat);
+
+    socket.broadcast.emit('new message', chat);
   })
 
   
 }
+
+// function onConnected (socket) {
+//   console.log(`User: ${socket.id} connected`)
+
+//   connectedClients.push(socket.id);
+//   io.emit('clients-total', connectedClients.length);
+
+//   console.log("Total connected clients:", connectedClients.length)
+  
+  
+//   socket.on('disconnect', () => {
+//     console.log(`User: ${socket.id} disconnected`);
+//     connectedClients.splice(connectedClients.indexOf(socket.id), 1)
+//     io.emit('clients-total', connectedClients.length);   
+//     console.log("Total connected clients:", connectedClients.length)
+//   })
+
+//   socket.on('message', (data) => {
+//     console.log(`Message recieved from ${data.name}: ${data.message}`)
+
+//     socket.broadcast.emit('chat-message', data);
+//   })
+
+  
+// }
