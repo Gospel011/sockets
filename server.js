@@ -45,6 +45,10 @@ function onConnected (socket) {
     
   })
 
+  socket.on('typing', (data) => {
+    console.log("Typing data:", data);
+    socket.broadcast.emit('typing', data);
+  })
   
   socket.on('new chat', (chat) => {
     
